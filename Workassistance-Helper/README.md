@@ -62,8 +62,19 @@ npm run deploy:ghpages  # deploys using angular-cli-ghpages
 ```
 
 Notes:
-- The GitHub Action sets the base-href to `/${{ github.event.repository.name }}/` automatically.
+- The GitHub Action sets an appropriate `base-href` automatically:
+	- `/${{ github.event.repository.name }}/` for project pages
+	- `/` for `username.github.io` user pages
 - Ensure your repo name is correct for project pages (e.g., if repo is `user/repo`, project pages will be at `https://user.github.io/repo/`).
+
+Troubleshooting GitHub Pages 404s
+- If you see a 404 page from GitHub Pages, verify the following:
+	1) The GitHub Actions workflow completed successfully and deployed to the `gh-pages` branch (check Actions tab & Branches).
+	2) The `gh-pages` branch contains the `index.html` file at the repo root.
+	3) Pages is configured for `gh-pages` (or `main`) branch in GitHub repository Settings → Pages.
+	4) If you host at `username.github.io`, make sure base-href was `/` and not `/${repo}/`.
+	5) If you host at `https://user.github.io/repo/`, make sure base-href is `/${repo}/`.
+	6) After deployment, give GitHub a minute to publish; if still 404, click "Pages" in repo settings and re-save the settings.
 
 ## Running unit tests
 
