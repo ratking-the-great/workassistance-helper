@@ -28,12 +28,12 @@ jobs:
           npm run build -- --configuration production --base-href=${BASE}
       - name: Verify build output
         run: |
-          ls -la dist/Workassistance-Helper
-          if [ ! -f dist/Workassistance-Helper/index.html ]; then
-            echo "ERROR: index.html not found in dist/Workassistance-Helper"; exit 1
+          ls -la dist/Workassistance-Helper/browser
+          if [ ! -f dist/Workassistance-Helper/browser/index.html ]; then
+            echo "ERROR: index.html not found in dist/Workassistance-Helper/browser"; exit 1
           fi
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/Workassistance-Helper
+          publish_dir: ./dist/Workassistance-Helper/browser
