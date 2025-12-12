@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 export interface ToleranceRow {
   type: string;
@@ -20,9 +21,15 @@ export class ToleranceService {
   async ensureLoaded(): Promise<void> {
     if (this._rows) return;
 
-    const response = await this.http.get('/assets/stahlrohr_tolerances.csv', { responseType: 'text' }).toPromise();
-    const txt = (response as string) || '';
-    this._rows = this.parseCsv(txt);
+    try {
+      const response = await firstValueFrom(this.http.get('/assets/stahlrohr_tolerances.csv', { responseType: 'text' }));
+      const txt = (response as string) || '';
+      this._rows = this.parseCsv(txt);
+      console.log('ToleranceService: loaded rows', this._rows.length);
+    } catch (err) {
+      console.error('ToleranceService: failed to load CSV assets/stahlrohr_tolerances.csv', err);
+      this._rows = [];
+    }
   }
 
   private parseCsv(text: string): ToleranceRow[] {
