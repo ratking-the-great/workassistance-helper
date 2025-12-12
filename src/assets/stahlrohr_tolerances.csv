@@ -1,0 +1,11 @@
+type,material,medium,dimension_mm,expected_value,tol_min,tol_max
+stahlrohr,stahl,Heizungswasser,10,1.6,1.5,1.7
+stahlrohr,stahl,Heizungswasser,15,2.1,2.0,2.2
+stahlrohr,stahl,Heizungswasser,20,2.7,2.6,2.8
+stahlrohr,stahl,Heizungswasser,25,3.4,3.3,3.5
+stahlrohr,stahl,Heizungswasser,32,4.3,4.1,4.5
+stahlrohr,stahl,Heizungswasser,40,5.4,5.1,5.6
+stahlrohr,stahl,Heizungswasser,50,7.0,6.8,7.2
+stahlrohr,stahl,Heizungswasser,65,9.8,9.4,10.2
+stahlrohr,stahl,Heizungswasser,80,13.0,12.6,13.4
+stahlrohr,stahl,Heizungswasser,100,17.6,17.0,18.2
