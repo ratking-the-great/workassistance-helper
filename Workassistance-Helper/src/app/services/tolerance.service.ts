@@ -22,7 +22,9 @@ export class ToleranceService {
     if (this._rows) return;
 
     try {
-      const response = await firstValueFrom(this.http.get('/assets/stahlrohr_tolerances.csv', { responseType: 'text' }));
+      const assetPath = 'assets/stahlrohr_tolerances.csv';
+      console.log('ToleranceService: requesting', assetPath);
+      const response = await firstValueFrom(this.http.get(assetPath, { responseType: 'text' }));
       const txt = (response as string) || '';
       this._rows = this.parseCsv(txt);
       console.log('ToleranceService: loaded rows', this._rows.length);

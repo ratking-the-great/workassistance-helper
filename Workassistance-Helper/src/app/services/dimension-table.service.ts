@@ -37,7 +37,9 @@ export class DimensionTableService {
   async ensureLoaded() {
     if (this.rows) return;
     try {
-      const resp = await firstValueFrom(this.http.get('/assets/dimension_tolerances.csv', { responseType: 'text' }));
+      const assetPath = 'assets/dimension_tolerances.csv';
+      console.log('DimensionTableService: requesting', assetPath);
+      const resp = await firstValueFrom(this.http.get(assetPath, { responseType: 'text' }));
       const txt = (resp as string) || '';
       this.rows = this.parseCsv(txt);
       console.log('DimensionTableService: loaded rows', this.rows?.length || 0);

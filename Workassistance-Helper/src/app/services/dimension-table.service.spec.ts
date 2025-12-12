@@ -26,7 +26,7 @@ describe('DimensionTableService', () => {
 
   it('findDimensionByMeasuredValue should match 33.5 to Dimension 1', async () => {
     const promise = service.findDimensionByMeasuredValue(33.5);
-    const req = httpMock.expectOne('/assets/dimension_tolerances.csv');
+    const req = httpMock.expectOne('assets/dimension_tolerances.csv');
     req.flush(csv);
     const row = await promise;
     expect(row).toBeTruthy();
