@@ -5,9 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
+    "build:ghpages": "ng build --configuration production --base-href=/${npm_package_name}/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Workassistance-Helper": "node dist/Workassistance-Helper/server/server.mjs"
+    "serve:ssr:Workassistance-Helper": "node dist/Workassistance-Helper/server/server.mjs",
+    "deploy:ghpages": "npx angular-cli-ghpages --dir=dist/Workassistance-Helper"
   },
   "prettier": {
     "printWidth": 100,

@@ -36,6 +36,35 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Deploy to GitHub Pages
+
+This repo contains a GitHub Actions workflow to automatically build and deploy the app to GitHub Pages on push to `main`.
+
+Manual steps (optionally):
+
+1) Build for GitHub Pages (replace `REPO_NAME` with your repository name):
+
+```bash
+ng build --configuration production --base-href /REPO_NAME/
+```
+
+2) Deploy using `angular-cli-ghpages` (npx):
+
+```bash
+npx angular-cli-ghpages --dir=dist/Workassistance-Helper
+```
+
+3) (Convenience) Use the provided npm scripts:
+
+```bash
+npm run build:ghpages  # builds using package name placeholder for base-href
+npm run deploy:ghpages  # deploys using angular-cli-ghpages
+```
+
+Notes:
+- The GitHub Action sets the base-href to `/${{ github.event.repository.name }}/` automatically.
+- Ensure your repo name is correct for project pages (e.g., if repo is `user/repo`, project pages will be at `https://user.github.io/repo/`).
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
