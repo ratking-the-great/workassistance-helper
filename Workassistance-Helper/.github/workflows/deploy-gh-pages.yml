@@ -32,6 +32,8 @@ jobs:
           if [ ! -f dist/Workassistance-Helper/browser/index.html ]; then
             echo "ERROR: index.html not found in dist/Workassistance-Helper/browser"; exit 1
           fi
+      - name: Add .nojekyll file
+        run: touch dist/Workassistance-Helper/browser/.nojekyll
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
