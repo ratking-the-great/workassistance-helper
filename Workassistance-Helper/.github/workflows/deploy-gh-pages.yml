@@ -25,9 +25,13 @@ jobs:
             BASE='/'${REPO}'/'
           fi
           echo "Computed base-href: ${BASE}"
-          npm run build -- --configuration production --base-href=${BASE} --output-path=docs
-      - name: Add .nojekyll file
-        run: touch docs/.nojekyll
+          npm run build -- --configuration production --base-href=${BASE}
+      - name: Prepare docs folder
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          cp -r dist/Workassistance-Helper/browser/* docs/
+          touch docs/.nojekyll
       - name: Commit and push to docs folder
         run: |
           git config user.name "github-actions[bot]"
