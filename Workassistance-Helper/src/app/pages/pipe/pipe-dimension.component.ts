@@ -26,17 +26,28 @@ import { DimensionTableService } from '../../services/dimension-table.service';
     <div class="section">
       <!-- button removed; check runs automatically on changes -->
 
-      <div *ngIf="checkResult as r" style="margin-top:1rem;">
+      <div *ngIf="checkResult as r" class="result-box">
         <div *ngIf="r.found; else notFound">
-          <div style="background:#ecfdf5;border:1px solid #bbf7d0;padding:1rem;border-radius:8px;font-weight:700;display:flex;align-items:center;gap:1rem;">
-            <div style="font-size:2rem;line-height:1;">{{r.row?.dimension}}</div>
-            <div style="font-size:1rem;color:#374151;">{{r.row?.zoll_d_mm}} mm</div>
+          <div class="result-success">
+            <div class="result-icon">✓</div>
+            <div class="result-content">
+              <div class="result-label">Dimension gefunden:</div>
+              <div class="result-dimension">{{r.row?.dimension}}</div>
+              <div class="result-details">
+                <span class="detail-item">📏 {{r.row?.zoll_d_mm}} mm</span>
+                <span class="detail-item">📊 Messwert: {{r.parsed}} mm</span>
+              </div>
+            </div>
           </div>
-          <div style="margin-top:0.25rem;color:#6b7280;font-size:0.9rem;">Eingegebener Messwert (geparst): {{r.parsed}} mm</div>
         </div>
         <ng-template #notFound>
-          <div *ngIf="r.invalid; else notFoundMsg">Ungültiger Messwert — bitte Dezimaltrennzeichen "," oder "." verwenden.</div>
-          <ng-template #notFoundMsg>Kein passender Eintrag in der Toleranz-Tabelle gefunden.</ng-template>
+          <div class="result-error">
+            <div class="result-icon">⚠️</div>
+            <div class="result-content">
+              <div *ngIf="r.invalid; else notFoundMsg">Ungültiger Messwert — bitte Dezimaltrennzeichen "," oder "." verwenden.</div>
+              <ng-template #notFoundMsg>Kein passender Eintrag in der Toleranz-Tabelle gefunden.</ng-template>
+            </div>
+          </div>
         </ng-template>
       </div>
     </div>
@@ -45,10 +56,130 @@ import { DimensionTableService } from '../../services/dimension-table.service';
   styles: [
     `
     .page { padding:1rem; max-width:720px; margin:0 auto; }
-    .back { display:inline-block; text-decoration:none; color:#374151; }
-    .section { margin-top:1rem; }
-    input[type=range] { width:100%; height:28px; }
-    .result { margin-top:1rem; padding:1rem; background:#f8fafc; border-radius:8px; font-size:1.1rem; }
+    .back { display:inline-block; text-decoration:none; color:var(--primary); font-weight:600; }
+    .back:hover { text-decoration:underline; }
+    .section { margin-top:1.5rem; }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    input[type=range] { 
+      width:100%; 
+      height:32px;
+      margin: 0.5rem 0;
+    }
+    
+    input[type=text] {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    
+    input[type=text]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .result-box {
+      margin-top: 2rem;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-success {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+      border: 2px solid #10b981;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    
+    .result-error {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+      border: 2px solid #ef4444;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    
+    .result-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    
+    .result-content {
+      flex: 1;
+    }
+    
+    .result-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    
+    .result-dimension {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--success);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    
+    .result-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    
+    .detail-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    
+    @media (max-width: 640px) {
+      .result-dimension {
+        font-size: 2rem;
+      }
+      
+      .result-details {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .detail-item {
+        width: 100%;
+      }
+    }
     `
   ]
 })

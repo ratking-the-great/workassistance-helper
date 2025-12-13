@@ -29,27 +29,204 @@ import { PipeTableService, Medium } from '../../services/pipe-table.service';
       <div class="dimension-value">{{dimension}} mm</div>
     </div>
 
-    <div class="section result">
-      <label>Ergebnis</label>
-      <div *ngIf="selectedMedium; else noMedium">
-        <div>Wert: <strong>{{value}}</strong></div>
-        <div class="note">(aus Tabelle interpoliert)</div>
+    <div class="result-box" *ngIf="selectedMedium">
+      <div class="result-success">
+        <div class="result-icon">📊</div>
+        <div class="result-content">
+          <div class="result-label">Berechneter Wert</div>
+          <div class="result-value">{{value}}</div>
+          <div class="result-details">
+            <span class="detail-item">📏 Dimension: {{dimension}} mm</span>
+            <span class="detail-item">🔧 Medium: {{selectedMedium}}</span>
+          </div>
+          <div class="result-note">Wert aus Tabelle interpoliert</div>
+        </div>
       </div>
-      <ng-template #noMedium>
-        <div>Bitte wählen Sie ein Medium.</div>
-      </ng-template>
+    </div>
+    <div class="result-box" *ngIf="!selectedMedium">
+      <div class="result-info">
+        <div class="result-icon">ℹ️</div>
+        <div class="result-content">
+          Bitte wählen Sie ein Medium aus.
+        </div>
+      </div>
     </div>
   </div>
   `,
   styles: [
     `
     .page { max-width:720px; margin:2rem auto; padding:1rem; }
-    .back { display:inline-block; margin-bottom:1rem; text-decoration:none; color:#374151; }
-    .options { display:flex; gap:1rem; margin-top:0.5rem; flex-wrap:wrap; }
-    .section { margin-top:1rem; }
-    input[type=range] { width:100%; }
-    .result { margin-top:1.5rem; padding:1rem; background:#f8fafc; border-radius:6px; }
-    .note { color:#6b7280; margin-top:0.5rem; font-size:0.9rem; }
+    .back { display:inline-block; margin-bottom:1rem; text-decoration:none; color:var(--primary); font-weight:600; }
+    .back:hover { text-decoration:underline; }
+    
+    h2 {
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    
+    .section { margin-top:2rem; }
+    
+    .options { 
+      display:flex; 
+      gap:0.75rem; 
+      margin-top:0.75rem; 
+      flex-wrap:wrap; 
+    }
+    
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    
+    .options label:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .options input[type=radio] {
+      margin: 0;
+    }
+    
+    .options input[type=radio]:checked + label,
+    .options label:has(input[type=radio]:checked) {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    input[type=range] { 
+      width:100%; 
+      height: 32px;
+      margin: 1rem 0;
+    }
+    
+    .dimension-value {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      padding: 0.5rem;
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+    }
+    
+    .result-box {
+      margin-top: 2rem;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-success {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+      border: 2px solid #10b981;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    
+    .result-info {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%);
+      border: 2px solid var(--primary);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .result-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    
+    .result-content {
+      flex: 1;
+    }
+    
+    .result-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    
+    .result-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--success);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    
+    .result-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    
+    .detail-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    
+    .result-note {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    
+    @media (max-width: 640px) {
+      .page { margin: 1rem auto; }
+      
+      .result-value {
+        font-size: 2rem;
+      }
+      
+      .result-details {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .detail-item {
+        width: 100%;
+      }
+    }
     `,
   ],
 })
