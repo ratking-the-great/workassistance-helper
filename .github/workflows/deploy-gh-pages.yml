@@ -18,6 +18,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Workassistance-Helper
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 20
@@ -42,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist/Workassistance-Helper/browser'
+          path: './Workassistance-Helper/dist/Workassistance-Helper/browser'
   
   deploy:
     environment:
