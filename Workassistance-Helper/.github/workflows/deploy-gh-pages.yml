@@ -25,17 +25,13 @@ jobs:
             BASE='/'${REPO}'/'
           fi
           echo "Computed base-href: ${BASE}"
-          npm run build -- --configuration production --base-href=${BASE}
-      - name: Verify build output
-        run: |
-          ls -la dist/Workassistance-Helper/browser
-          if [ ! -f dist/Workassistance-Helper/browser/index.html ]; then
-            echo "ERROR: index.html not found in dist/Workassistance-Helper/browser"; exit 1
-          fi
+          npm run build -- --configuration production --base-href=${BASE} --output-path=docs
       - name: Add .nojekyll file
-        run: touch dist/Workassistance-Helper/browser/.nojekyll
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/Workassistance-Helper/browser
+        run: touch docs/.nojekyll
+      - name: Commit and push to docs folder
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
+          git push
